@@ -1,0 +1,377 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Grateful Deploy. Buttons for your Kamal deploys.</title>
+  <meta name="description" content="A dashboard for the apps you deploy with Kamal. Deploy, roll back and read logs with a button, see every app's version, health and memory, and keep your config plain Kamal. Runs on your own machine.">
+  <link rel="canonical" href="https://gratefuldeploy.com/">
+  <meta property="og:type" content="website">
+  <meta property="og:url" content="https://gratefuldeploy.com/">
+  <meta property="og:title" content="Grateful Deploy. Buttons for your Kamal deploys.">
+  <meta property="og:description" content="A dashboard for the apps you deploy with Kamal. Deploy, roll back and read logs with a button, see every app's version, health and memory, and keep your config plain Kamal. Runs on your own machine.">
+  <meta property="og:image" content="https://gratefuldeploy.com/images/social-card.png">
+  <meta property="og:image:type" content="image/png">
+  <meta property="og:image:width" content="1200">
+  <meta property="og:image:height" content="630">
+  <meta property="og:image:alt" content="Grateful Deploy. Buttons for your Kamal deploys. Rails 8, SQLite, Hotwire.">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="Grateful Deploy. Buttons for your Kamal deploys.">
+  <meta name="twitter:description" content="A dashboard for the apps you deploy with Kamal. Deploy, roll back and read logs with a button, see every app's version, health and memory, and keep your config plain Kamal. Runs on your own machine.">
+  <meta name="twitter:image" content="https://gratefuldeploy.com/images/social-card.png">
+  <meta name="twitter:image:alt" content="Grateful Deploy. Buttons for your Kamal deploys. Rails 8, SQLite, Hotwire.">
+  <link rel="icon" href="favicon.svg" type="image/svg+xml">
+  <style>
+    /* Grateful Deploy's own tokens (app/assets/stylesheets/application.css). */
+    :root {
+      color-scheme: light;
+      --bg: #f6f7f9;
+      --surface: #ffffff;
+      --border: #e3e6eb;
+      --border-strong: #cfd4dc;
+      --text: #1c2330;
+      --text-strong: #0f1520;
+      --muted: #6b7486;
+      --accent: #2456d6;
+      --accent-bg: #e8eefc;
+      --up: #1a7f4b;
+      --up-bg: #e3f5eb;
+      --warn: #9a6700;
+      --log-bg: #11151c;
+      --log-text: #d6dbe4;
+      --bear-outline: #14141e;
+      --bear-body: #2456d6;
+      --bear-collar: #f2c14e;
+      --shadow: 0 18px 50px rgba(15, 30, 60, 0.12);
+      --radius: 10px;
+      --font: system-ui, -apple-system, "Segoe UI", sans-serif;
+      --mono: ui-monospace, "SF Mono", "JetBrains Mono", Menlo, monospace;
+    }
+    @media (prefers-color-scheme: dark) {
+      :root {
+        color-scheme: dark;
+        --bg: #0f1218;
+        --surface: #171b23;
+        --border: #262c37;
+        --border-strong: #343c4a;
+        --text: #e6e9ef;
+        --text-strong: #ffffff;
+        --muted: #8b94a7;
+        --accent: #7aa2ff;
+        --accent-bg: rgba(122, 162, 255, 0.12);
+        --up: #5fd39a;
+        --up-bg: #16322a;
+        --warn: #f2c14e;
+        --log-bg: #0b0e13;
+        --bear-outline: #05070a;
+        --bear-body: #7aa2ff;
+        --bear-collar: #f2c14e;
+        --shadow: 0 28px 70px rgba(0, 0, 0, 0.55);
+      }
+    }
+
+    * { box-sizing: border-box; }
+    html, body {
+      margin: 0;
+      padding: 0;
+      background: var(--bg);
+      color: var(--text);
+      font: 16px/1.6 var(--font);
+      -webkit-font-smoothing: antialiased;
+    }
+    a { color: var(--accent); text-decoration: none; }
+    a:hover { text-decoration: underline; }
+    :focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+    code {
+      font-family: var(--mono);
+      font-size: 0.88em;
+      background: var(--bg);
+      border: 1px solid var(--border);
+      padding: 0.05em 0.35em;
+      border-radius: 4px;
+    }
+
+    .shell {
+      max-width: 1040px;
+      margin: 24px auto 40px;
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      box-shadow: var(--shadow);
+      overflow: hidden;
+    }
+    .topbar {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 16px;
+      padding: 12px 24px;
+      border-bottom: 1px solid var(--border);
+    }
+    .brand {
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      font-weight: 700;
+      letter-spacing: -0.01em;
+      color: var(--text);
+      white-space: nowrap;
+    }
+    .brand:hover { text-decoration: none; }
+    .bear { display: block; shape-rendering: crispEdges; }
+    .bear .k { fill: var(--bear-outline); }
+    .bear .b { fill: var(--bear-body); }
+    .bear .y { fill: var(--bear-collar); }
+    .topbar nav { display: flex; gap: 20px; font-size: 15px; }
+
+    main { padding: 0 40px 32px; }
+    section { padding: 44px 0; border-bottom: 1px solid var(--border); }
+    section:last-of-type { border-bottom: 0; }
+    h2 { margin: 0 0 18px; font-size: 1.35rem; letter-spacing: -0.01em; color: var(--text-strong); }
+    p { margin: 0 0 14px; max-width: 66ch; }
+    p:last-child { margin-bottom: 0; }
+
+    .hero { display: grid; grid-template-columns: 1fr auto; gap: 32px; align-items: center; padding-top: 56px; }
+    .hero h1 { margin: 0 0 6px; font-size: 2.6rem; line-height: 1.1; letter-spacing: -0.025em; color: var(--text-strong); }
+    .tagline { margin: 0 0 22px; font-size: 1.2rem; color: var(--accent); font-weight: 600; }
+    .hero p { font-size: 1.05rem; }
+    .hero .bear { width: 168px; height: auto; }
+    .callout {
+      margin-top: 22px;
+      padding: 12px 16px;
+      border: 1px solid var(--border);
+      border-left: 3px solid var(--accent);
+      border-radius: 6px;
+      background: var(--bg);
+      color: var(--muted);
+      max-width: 66ch;
+      font-size: 0.95rem;
+    }
+    .callout strong { color: var(--text); }
+    .actions { display: flex; flex-wrap: wrap; gap: 10px; margin-top: 28px; }
+    .button {
+      display: inline-block;
+      padding: 9px 18px;
+      border-radius: 8px;
+      border: 1px solid var(--border-strong);
+      background: var(--surface);
+      color: var(--text);
+      font-weight: 600;
+      font-size: 0.95rem;
+    }
+    .button:hover { text-decoration: none; border-color: var(--accent); color: var(--accent); }
+    .button--primary { background: var(--accent); border-color: var(--accent); color: var(--surface); }
+    .button--primary:hover { color: var(--surface); filter: brightness(1.08); }
+
+    .features {
+      list-style: none;
+      margin: 0;
+      padding: 0;
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(290px, 1fr));
+      gap: 14px;
+    }
+    .features li {
+      background: var(--bg);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 16px 18px 18px;
+      font-size: 0.95rem;
+    }
+    .features strong { display: block; margin-bottom: 4px; color: var(--text-strong); }
+
+    .shots { display: grid; gap: 34px; }
+    figure { margin: 0; }
+    figure img {
+      display: block;
+      width: 100%;
+      height: auto;
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      box-shadow: var(--shadow);
+    }
+    figure.narrow { max-width: 820px; }
+    figcaption { margin-top: 12px; font-size: 0.92rem; color: var(--muted); }
+    figcaption strong { color: var(--text-strong); margin-right: 8px; }
+
+    .stack { display: flex; flex-wrap: wrap; gap: 8px; margin: 0 0 16px; padding: 0; list-style: none; }
+    .stack li {
+      padding: 4px 12px;
+      border: 1px solid var(--border-strong);
+      border-radius: 999px;
+      background: var(--bg);
+      color: var(--text);
+      font-size: 0.88rem;
+    }
+    .stack li.no { border-style: dashed; color: var(--muted); text-decoration: line-through; }
+    .note { color: var(--muted); font-size: 0.95rem; }
+
+    pre {
+      margin: 0 0 16px;
+      padding: 16px 18px;
+      background: var(--log-bg);
+      border-radius: 8px;
+      color: var(--log-text);
+      font: 0.85rem/1.75 var(--mono);
+      overflow-x: auto;
+    }
+    pre code { display: block; background: none; border: 0; padding: 0; color: inherit; font-size: inherit; }
+    pre .c { color: #7d8698; }
+    pre .p { color: #5fd39a; user-select: none; }
+
+    .statusbar {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      justify-content: space-between;
+      gap: 8px 16px;
+      padding: 12px 24px;
+      border-top: 1px solid var(--border);
+      background: var(--bg);
+      color: var(--muted);
+      font-size: 0.85rem;
+    }
+    .statusbar .live { color: var(--up); }
+    .statusbar a { color: var(--muted); }
+    .statusbar a:hover { color: var(--accent); }
+    .statusbar span + span::before { content: "\00b7"; margin: 0 8px; }
+
+    @media (max-width: 720px) {
+      .shell { margin: 0; border-radius: 0; border-left: 0; border-right: 0; border-top: 0; }
+      .topbar { padding: 12px 16px; }
+      .topbar nav { gap: 14px; font-size: 14px; }
+      .topbar nav a:nth-child(n+3) { display: none; }
+      main { padding: 0 16px 16px; }
+      section { padding: 32px 0; }
+      .hero { grid-template-columns: 1fr; padding-top: 36px; }
+      .hero .bear { display: none; }
+      .hero h1 { font-size: 2rem; }
+      .statusbar { flex-direction: column; align-items: flex-start; padding: 12px 16px; }
+      .statusbar div:last-child > span { display: block; }
+      .statusbar span + span::before { content: none; }
+    }
+  </style>
+</head>
+<body>
+  <div class="shell">
+    <header class="topbar">
+      <a class="brand" href="https://gratefuldeploy.com/">
+        <svg class="bear" viewBox="0 0 29 28" width="22" height="21" aria-hidden="true" focusable="false"><path class="k" d="M8 0h3v1h-3zM19 0h3v1h-3zM7 1h6v1h-6zM16 1h6v1h-6zM8 2h3v1h-3zM19 2h4v1h-4zM8 3h1v1h-1zM21 3h1v1h-1zM8 4h2v1h-2zM14 4h2v1h-2zM20 4h1v1h-1zM5 5h3v1h-3zM9 5h1v1h-1zM14 5h2v1h-2zM19 5h1v1h-1zM4 6h2v1h-2zM8 6h3v1h-3zM15 6h2v1h-2zM19 6h1v1h-1zM21 6h4v1h-4zM3 7h2v1h-2zM9 7h1v1h-1zM12 7h5v1h-5zM18 7h2v1h-2zM22 7h2v1h-2zM9 8h1v1h-1zM15 8h1v1h-1zM17 8h2v1h-2zM20 8h5v1h-5zM3 9h1v1h-1zM9 9h2v1h-2zM13 9h4v1h-4zM18 9h1v1h-1zM23 9h1v1h-1zM1 10h2v1h-2zM7 10h4v1h-4zM18 10h1v1h-1zM21 10h2v1h-2zM0 11h1v1h-1zM6 11h1v1h-1zM10 11h2v1h-2zM17 11h4v1h-4zM0 12h1v1h-1zM5 12h1v1h-1zM11 12h2v1h-2zM14 12h1v1h-1zM16 12h3v1h-3zM0 13h4v1h-4zM9 13h1v1h-1zM11 13h1v1h-1zM13 13h3v1h-3zM18 13h1v1h-1zM8 14h1v1h-1zM15 14h1v1h-1zM18 14h1v1h-1zM8 15h1v1h-1zM18 15h1v1h-1zM7 16h1v1h-1zM18 16h1v1h-1zM8 17h1v1h-1zM18 17h2v1h-2zM8 18h1v1h-1zM17 18h1v1h-1zM21 18h1v1h-1zM8 19h1v1h-1zM14 19h1v1h-1zM17 19h1v1h-1zM23 19h4v1h-4zM28 19h1v1h-1zM7 20h1v1h-1zM16 20h3v1h-3zM28 20h1v1h-1zM6 21h1v1h-1zM13 21h2v1h-2zM19 21h2v1h-2zM27 21h2v1h-2zM5 22h2v1h-2zM12 22h2v1h-2zM21 22h1v1h-1zM25 22h2v1h-2zM5 23h1v1h-1zM11 23h2v1h-2zM23 23h2v1h-2zM5 24h1v1h-1zM9 24h1v1h-1zM5 25h1v1h-1zM9 25h3v1h-3zM5 26h1v1h-1zM11 26h1v1h-1zM7 27h4v1h-4z"/><path class="b" d="M13 1h3v1h-3zM11 2h8v1h-8zM9 3h12v1h-12zM10 4h4v1h-4zM16 4h4v1h-4zM10 5h4v1h-4zM16 5h3v1h-3zM6 6h2v1h-2zM11 6h4v1h-4zM17 6h2v1h-2zM5 7h4v1h-4zM17 7h1v1h-1zM20 7h2v1h-2zM24 7h1v1h-1zM4 8h5v1h-5zM13 8h2v1h-2zM16 8h1v1h-1zM19 8h1v1h-1zM4 9h5v1h-5zM19 9h4v1h-4zM3 10h4v1h-4zM19 10h2v1h-2zM1 11h5v1h-5zM1 12h4v1h-4zM10 12h1v1h-1zM10 13h1v1h-1zM12 13h1v1h-1zM16 13h2v1h-2zM9 14h6v1h-6zM16 14h2v1h-2zM9 15h9v1h-9zM8 16h10v1h-10zM9 17h9v1h-9zM9 18h8v1h-8zM18 18h3v1h-3zM9 19h5v1h-5zM15 19h2v1h-2zM18 19h5v1h-5zM27 19h1v1h-1zM8 20h8v1h-8zM19 20h9v1h-9zM7 21h6v1h-6zM21 21h6v1h-6zM7 22h5v1h-5zM22 22h3v1h-3zM6 23h5v1h-5zM6 24h3v1h-3zM6 25h3v1h-3zM6 26h5v1h-5z"/><path class="y" d="M10 7h2v1h-2zM10 8h3v1h-3zM11 9h2v1h-2zM17 9h1v1h-1zM11 10h7v1h-7zM12 11h5v1h-5zM13 12h1v1h-1zM15 12h1v1h-1z"/></svg>
+        Grateful Deploy
+      </a>
+      <nav>
+        <a href="#features">Features</a>
+        <a href="#quickstart">Quick start</a>
+        <a href="#stack">Stack</a>
+        <a href="https://github.com/joelgaff/Grateful-Deploy">GitHub</a>
+      </nav>
+    </header>
+
+    <main>
+      <section class="hero">
+        <div>
+          <h1>Grateful Deploy</h1>
+          <p class="tagline">Buttons for your Kamal deploys</p>
+          <p>A dashboard for the apps you deploy with <a href="https://kamal-deploy.org">Kamal</a>. Every app gets a card with its running version, health and memory, and a page with Deploy, Roll back and Logs buttons. Each button runs one fixed Kamal or SSH command inside the app's own repo. There's nothing to type.</p>
+          <p>It runs on your own machine, with your SSH keys and your repos.</p>
+          <div class="callout">
+            <strong>Your config stays plain Kamal.</strong> Nothing to migrate and nothing to lock you in: deploy from a terminal whenever you like, and Grateful Deploy still records it.
+          </div>
+          <div class="actions">
+            <a class="button button--primary" href="https://github.com/joelgaff/Grateful-Deploy">View on GitHub</a>
+            <a class="button" href="#quickstart">Quick start</a>
+          </div>
+        </div>
+        <svg class="bear" viewBox="0 0 29 28" width="168" height="162" aria-hidden="true" focusable="false"><path class="k" d="M8 0h3v1h-3zM19 0h3v1h-3zM7 1h6v1h-6zM16 1h6v1h-6zM8 2h3v1h-3zM19 2h4v1h-4zM8 3h1v1h-1zM21 3h1v1h-1zM8 4h2v1h-2zM14 4h2v1h-2zM20 4h1v1h-1zM5 5h3v1h-3zM9 5h1v1h-1zM14 5h2v1h-2zM19 5h1v1h-1zM4 6h2v1h-2zM8 6h3v1h-3zM15 6h2v1h-2zM19 6h1v1h-1zM21 6h4v1h-4zM3 7h2v1h-2zM9 7h1v1h-1zM12 7h5v1h-5zM18 7h2v1h-2zM22 7h2v1h-2zM9 8h1v1h-1zM15 8h1v1h-1zM17 8h2v1h-2zM20 8h5v1h-5zM3 9h1v1h-1zM9 9h2v1h-2zM13 9h4v1h-4zM18 9h1v1h-1zM23 9h1v1h-1zM1 10h2v1h-2zM7 10h4v1h-4zM18 10h1v1h-1zM21 10h2v1h-2zM0 11h1v1h-1zM6 11h1v1h-1zM10 11h2v1h-2zM17 11h4v1h-4zM0 12h1v1h-1zM5 12h1v1h-1zM11 12h2v1h-2zM14 12h1v1h-1zM16 12h3v1h-3zM0 13h4v1h-4zM9 13h1v1h-1zM11 13h1v1h-1zM13 13h3v1h-3zM18 13h1v1h-1zM8 14h1v1h-1zM15 14h1v1h-1zM18 14h1v1h-1zM8 15h1v1h-1zM18 15h1v1h-1zM7 16h1v1h-1zM18 16h1v1h-1zM8 17h1v1h-1zM18 17h2v1h-2zM8 18h1v1h-1zM17 18h1v1h-1zM21 18h1v1h-1zM8 19h1v1h-1zM14 19h1v1h-1zM17 19h1v1h-1zM23 19h4v1h-4zM28 19h1v1h-1zM7 20h1v1h-1zM16 20h3v1h-3zM28 20h1v1h-1zM6 21h1v1h-1zM13 21h2v1h-2zM19 21h2v1h-2zM27 21h2v1h-2zM5 22h2v1h-2zM12 22h2v1h-2zM21 22h1v1h-1zM25 22h2v1h-2zM5 23h1v1h-1zM11 23h2v1h-2zM23 23h2v1h-2zM5 24h1v1h-1zM9 24h1v1h-1zM5 25h1v1h-1zM9 25h3v1h-3zM5 26h1v1h-1zM11 26h1v1h-1zM7 27h4v1h-4z"/><path class="b" d="M13 1h3v1h-3zM11 2h8v1h-8zM9 3h12v1h-12zM10 4h4v1h-4zM16 4h4v1h-4zM10 5h4v1h-4zM16 5h3v1h-3zM6 6h2v1h-2zM11 6h4v1h-4zM17 6h2v1h-2zM5 7h4v1h-4zM17 7h1v1h-1zM20 7h2v1h-2zM24 7h1v1h-1zM4 8h5v1h-5zM13 8h2v1h-2zM16 8h1v1h-1zM19 8h1v1h-1zM4 9h5v1h-5zM19 9h4v1h-4zM3 10h4v1h-4zM19 10h2v1h-2zM1 11h5v1h-5zM1 12h4v1h-4zM10 12h1v1h-1zM10 13h1v1h-1zM12 13h1v1h-1zM16 13h2v1h-2zM9 14h6v1h-6zM16 14h2v1h-2zM9 15h9v1h-9zM8 16h10v1h-10zM9 17h9v1h-9zM9 18h8v1h-8zM18 18h3v1h-3zM9 19h5v1h-5zM15 19h2v1h-2zM18 19h5v1h-5zM27 19h1v1h-1zM8 20h8v1h-8zM19 20h9v1h-9zM7 21h6v1h-6zM21 21h6v1h-6zM7 22h5v1h-5zM22 22h3v1h-3zM6 23h5v1h-5zM6 24h3v1h-3zM6 25h3v1h-3zM6 26h5v1h-5z"/><path class="y" d="M10 7h2v1h-2zM10 8h3v1h-3zM11 9h2v1h-2zM17 9h1v1h-1zM11 10h7v1h-7zM12 11h5v1h-5zM13 12h1v1h-1zM15 12h1v1h-1z"/></svg>
+      </section>
+
+      <section id="features">
+        <h2>What it does</h2>
+        <ul class="features">
+          <li><strong>Buttons, not commands</strong>Deploy, roll back, stop, start and logs each run one allowlisted Kamal or SSH command, built from argument arrays inside the app's repo. Nothing from a request reaches a shell.</li>
+          <li><strong>Live deploy logs</strong>Kamal's output streams into the page as it runs and is kept with the deploy. One deploy per app at a time, cancelable, and stopped after 20 minutes.</li>
+          <li><strong>Health at a glance</strong>Every two minutes each app's running version, container state, memory and health check (over HTTP or HTTPS, through kamal-proxy) land on its card.</li>
+          <li><strong>Servers</strong>RAM, disk, swap, load and every container on each server, from read-only SSH checks.</li>
+          <li><strong>One-click rollback</strong>Roll back to any earlier version whose container is still on the server.</li>
+          <li><strong>Kamal's deploy lock</strong>While someone else's deploy holds the lock, Deploy waits and the page shows who holds it, with a button to release a lock a dead deploy left behind.</li>
+          <li><strong>Terminal deploys count too</strong>A Kamal post-deploy hook reports deploys made from a terminal or CI, so the history and the rollback list include them.</li>
+          <li><strong>Secrets scrubbed</strong>Keys, tokens, passwords and email addresses are masked in every line of output before it's saved or shown.</li>
+          <li><strong>Add app</strong>Finds repos with Kamal config in your projects folder, reads it without running its ERB, and writes the new app into your fleet file to review.</li>
+          <li><strong>Passwordless sign-in</strong>Each sign-in emails a six-digit code.</li>
+        </ul>
+      </section>
+
+      <section id="screens">
+        <h2>Screens</h2>
+        <div class="shots">
+          <figure class="narrow">
+            <picture>
+              <source media="(prefers-color-scheme: dark)" srcset="screenshots/dashboard-dark.jpg">
+              <img src="screenshots/dashboard-light.jpg" width="920" height="770" alt="The apps dashboard: a card per app grouped by server, with health, version, memory and last deploy" loading="eager">
+            </picture>
+            <figcaption><strong>Apps</strong>Every app on every server: health, running version, memory and its last deploy. The bear dances while a deploy runs.</figcaption>
+          </figure>
+          <figure>
+            <picture>
+              <source media="(prefers-color-scheme: dark)" srcset="screenshots/app-dark.jpg">
+              <img src="screenshots/app-light.jpg" width="1100" height="1088" alt="An app page with Deploy and Stop container buttons, running version, health, logs, rollback buttons and deploy history" loading="lazy">
+            </picture>
+            <figcaption><strong>App</strong>Deploy with one button and see how far HEAD is ahead of what's running, then roll back, read logs or check the history.</figcaption>
+          </figure>
+          <figure>
+            <picture>
+              <source media="(prefers-color-scheme: dark)" srcset="screenshots/deploy-log-dark.jpg">
+              <img src="screenshots/deploy-log-light.jpg" width="1100" height="940" alt="A finished deploy with its commit, timing and Kamal's full output" loading="lazy">
+            </picture>
+            <figcaption><strong>Deploy</strong>Kamal's output as it happened, with secrets masked.</figcaption>
+          </figure>
+          <figure>
+            <picture>
+              <source media="(prefers-color-scheme: dark)" srcset="screenshots/servers-dark.jpg">
+              <img src="screenshots/servers-light.jpg" width="1100" height="977" alt="The servers page: memory, disk, swap and load bars and a table of containers for each server" loading="lazy">
+            </picture>
+            <figcaption><strong>Servers</strong>RAM, disk, swap, load and containers on each server.</figcaption>
+          </figure>
+        </div>
+      </section>
+
+      <section id="stack">
+        <h2>Stack</h2>
+        <ul class="stack">
+          <li>Ruby 3.4</li>
+          <li>Rails 8</li>
+          <li>SQLite</li>
+          <li>Solid Queue, Cache, Cable</li>
+          <li>Hotwire</li>
+          <li>Importmap, no build step</li>
+          <li class="no">Postgres</li>
+          <li class="no">Redis</li>
+          <li class="no">Node</li>
+          <li class="no">Sidekiq</li>
+        </ul>
+        <p class="note">It runs as a systemd user service on Linux, bound to 127.0.0.1, next to the repos it deploys. On <a href="https://omarchy.org">Omarchy</a> it also adds itself to the app launcher.</p>
+      </section>
+
+      <section id="quickstart">
+        <h2>Quick start</h2>
+<pre><code><span class="p">$ </span>git clone https://github.com/joelgaff/Grateful-Deploy.git grateful-deploy
+<span class="p">$ </span>cd grateful-deploy
+<span class="p">$ </span>bin/setup --skip-server       <span class="c"># gems, databases, the pre-push CI hook, config/fleet.yml</span>
+<span class="p">$ </span>bin/rails credentials:edit    <span class="c"># your own master key and credentials</span>
+<span class="p">$ </span>$EDITOR config/fleet.yml       <span class="c"># your servers and apps</span>
+<span class="p">$ </span>bin/release                   <span class="c"># install and start the service</span></code></pre>
+        <p>Then open <code>http://127.0.0.1:3100</code> and sign in with your email. The <a href="https://github.com/joelgaff/Grateful-Deploy#readme">README</a> covers the fleet file, mail for login codes, and recording deploys made from a terminal.</p>
+      </section>
+    </main>
+
+    <footer class="statusbar">
+      <div><span class="live">&#9679;</span> Grateful Deploy</div>
+      <div>
+        <span><a href="https://github.com/joelgaff/Grateful-Deploy">github.com/joelgaff/Grateful-Deploy</a></span>
+        <span><a href="https://github.com/joelgaff/Grateful-Deploy/blob/master/LICENSE.md">O'Saasy license</a></span>
+        <span>Made by <a href="https://joelgaff.com">Joel Gaff, Jr.</a></span>
+      </div>
+    </footer>
+  </div>
+</body>
+</html>
