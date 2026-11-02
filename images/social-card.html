@@ -2,46 +2,50 @@
 <!-- Source for social-card.png. Re-render with:
      chromium --headless=new --hide-scrollbars --force-device-scale-factor=1 --window-size=1200,630 --screenshot=social-card.png social-card.html -->
 <html lang="en"><head><meta charset="utf-8">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,600;1,9..144,600&display=swap">
 <style>
   * { box-sizing: border-box; }
   html, body { margin: 0; width: 1200px; height: 630px; overflow: hidden; }
   body {
-    background: #0f1218;
-    color: #e6e9ef;
+    background: #14121c url(tiedye-dark.webp) center / cover no-repeat;
+    color: #efe6d8;
     font-family: system-ui, -apple-system, "Segoe UI", sans-serif;
     position: relative;
     -webkit-font-smoothing: antialiased;
   }
-  .edge { position: absolute; top: 0; left: 0; right: 0; height: 6px; background: #7aa2ff; }
-  .left { position: absolute; left: 72px; top: 0; bottom: 0; width: 560px;
+  .panel { position: absolute; left: 40px; top: 40px; bottom: 40px; width: 640px; border-radius: 16px;
+    background: #1d1a28; border: 1px solid #302b40; box-shadow: 0 30px 80px rgba(0,0,0,0.5); overflow: hidden; }
+  .dye { position: absolute; left: 0; right: 0; top: 0; height: 5px; opacity: 0.8;
+    background: linear-gradient(90deg, #c08aa3, #86b5b8, #e0d0a0, #9a8bb2, #d0a68e, #8c9fbc); }
+  .left { position: absolute; left: 44px; top: 0; bottom: 0; width: 560px;
     display: flex; flex-direction: column; justify-content: center; }
-  .brand { display: flex; align-items: center; gap: 18px; margin-bottom: 22px; }
-  .bear { display: block; shape-rendering: crispEdges; }
-  .bear .k { fill: #05070a; } .bear .b { fill: #7aa2ff; } .bear .y { fill: #f2c14e; }
-  .wordmark { font-size: 56px; line-height: 1; font-weight: 700; letter-spacing: -0.025em; color: #ffffff; white-space: nowrap; }
-  .tagline { font-size: 28px; color: #7aa2ff; font-weight: 600; margin: 0 0 20px; }
-  .pitch { font-size: 21px; line-height: 1.5; color: #c9cfdb; margin: 0 0 30px; max-width: 540px; }
+  .brand { display: flex; align-items: center; gap: 16px; margin-bottom: 18px; }
+  .rose .petals { fill: #f07a8a; } .rose .folds { fill: none; stroke: #b8475a; stroke-width: 0.9; stroke-linecap: round; }
+  .rose .stem { fill: none; stroke: #86b07f; stroke-width: 1.6; stroke-linecap: round; } .rose .leaf { fill: #86b07f; }
+  .wordmark { font-family: "Fraunces", Georgia, serif; font-size: 58px; line-height: 1; font-weight: 600; letter-spacing: -0.02em; color: #fbf5ea; white-space: nowrap; }
+  .tagline { font-family: "Fraunces", Georgia, serif; font-style: italic; font-weight: 600; font-size: 30px; color: #f07a8a; margin: 0 0 18px; }
+  .pitch { font-size: 21px; line-height: 1.5; color: #d6cdc1; margin: 0 0 28px; }
   .chips { display: flex; flex-wrap: wrap; gap: 10px; }
-  .chips span { padding: 7px 16px; border: 1px solid #343c4a; border-radius: 999px;
-    background: #171b23; color: #e6e9ef; font-size: 17px; }
-  .url { position: absolute; left: 72px; bottom: 40px; font-size: 18px; color: #8b94a7; }
-  .url b { color: #5fd39a; font-weight: 400; margin-right: 10px; }
-  .shot { position: absolute; left: 690px; top: 92px; width: 620px; height: 655px;
-    border: 1px solid #343c4a; border-radius: 10px; overflow: hidden;
-    background: #171b23; box-shadow: 0 30px 80px rgba(0,0,0,0.7); }
+  .chips span { padding: 7px 16px; border: 1px solid #3d3752; border-radius: 999px; background: #14121c; color: #efe6d8; font-size: 17px; }
+  .url { position: absolute; left: 44px; bottom: 30px; font-size: 18px; color: #a99f94; }
+  .url b { color: #7fd39a; font-weight: 400; margin-right: 10px; }
+  .shot { position: absolute; left: 720px; top: 92px; width: 620px; height: 655px;
+    border: 1px solid #302b40; border-radius: 10px; overflow: hidden; background: #1d1a28; box-shadow: 0 30px 80px rgba(0,0,0,0.7); }
   .shot img { display: block; width: 100%; height: auto; }
 </style></head>
 <body>
-  <div class="edge"></div>
-  <div class="left">
-    <div class="brand">
-      <svg class="bear" viewBox="0 0 29 28" width="64" height="62" aria-hidden="true" focusable="false"><path class="k" d="M8 0h3v1h-3zM19 0h3v1h-3zM7 1h6v1h-6zM16 1h6v1h-6zM8 2h3v1h-3zM19 2h4v1h-4zM8 3h1v1h-1zM21 3h1v1h-1zM8 4h2v1h-2zM14 4h2v1h-2zM20 4h1v1h-1zM5 5h3v1h-3zM9 5h1v1h-1zM14 5h2v1h-2zM19 5h1v1h-1zM4 6h2v1h-2zM8 6h3v1h-3zM15 6h2v1h-2zM19 6h1v1h-1zM21 6h4v1h-4zM3 7h2v1h-2zM9 7h1v1h-1zM12 7h5v1h-5zM18 7h2v1h-2zM22 7h2v1h-2zM9 8h1v1h-1zM15 8h1v1h-1zM17 8h2v1h-2zM20 8h5v1h-5zM3 9h1v1h-1zM9 9h2v1h-2zM13 9h4v1h-4zM18 9h1v1h-1zM23 9h1v1h-1zM1 10h2v1h-2zM7 10h4v1h-4zM18 10h1v1h-1zM21 10h2v1h-2zM0 11h1v1h-1zM6 11h1v1h-1zM10 11h2v1h-2zM17 11h4v1h-4zM0 12h1v1h-1zM5 12h1v1h-1zM11 12h2v1h-2zM14 12h1v1h-1zM16 12h3v1h-3zM0 13h4v1h-4zM9 13h1v1h-1zM11 13h1v1h-1zM13 13h3v1h-3zM18 13h1v1h-1zM8 14h1v1h-1zM15 14h1v1h-1zM18 14h1v1h-1zM8 15h1v1h-1zM18 15h1v1h-1zM7 16h1v1h-1zM18 16h1v1h-1zM8 17h1v1h-1zM18 17h2v1h-2zM8 18h1v1h-1zM17 18h1v1h-1zM21 18h1v1h-1zM8 19h1v1h-1zM14 19h1v1h-1zM17 19h1v1h-1zM23 19h4v1h-4zM28 19h1v1h-1zM7 20h1v1h-1zM16 20h3v1h-3zM28 20h1v1h-1zM6 21h1v1h-1zM13 21h2v1h-2zM19 21h2v1h-2zM27 21h2v1h-2zM5 22h2v1h-2zM12 22h2v1h-2zM21 22h1v1h-1zM25 22h2v1h-2zM5 23h1v1h-1zM11 23h2v1h-2zM23 23h2v1h-2zM5 24h1v1h-1zM9 24h1v1h-1zM5 25h1v1h-1zM9 25h3v1h-3zM5 26h1v1h-1zM11 26h1v1h-1zM7 27h4v1h-4z"/><path class="b" d="M13 1h3v1h-3zM11 2h8v1h-8zM9 3h12v1h-12zM10 4h4v1h-4zM16 4h4v1h-4zM10 5h4v1h-4zM16 5h3v1h-3zM6 6h2v1h-2zM11 6h4v1h-4zM17 6h2v1h-2zM5 7h4v1h-4zM17 7h1v1h-1zM20 7h2v1h-2zM24 7h1v1h-1zM4 8h5v1h-5zM13 8h2v1h-2zM16 8h1v1h-1zM19 8h1v1h-1zM4 9h5v1h-5zM19 9h4v1h-4zM3 10h4v1h-4zM19 10h2v1h-2zM1 11h5v1h-5zM1 12h4v1h-4zM10 12h1v1h-1zM10 13h1v1h-1zM12 13h1v1h-1zM16 13h2v1h-2zM9 14h6v1h-6zM16 14h2v1h-2zM9 15h9v1h-9zM8 16h10v1h-10zM9 17h9v1h-9zM9 18h8v1h-8zM18 18h3v1h-3zM9 19h5v1h-5zM15 19h2v1h-2zM18 19h5v1h-5zM27 19h1v1h-1zM8 20h8v1h-8zM19 20h9v1h-9zM7 21h6v1h-6zM21 21h6v1h-6zM7 22h5v1h-5zM22 22h3v1h-3zM6 23h5v1h-5zM6 24h3v1h-3zM6 25h3v1h-3zM6 26h5v1h-5z"/><path class="y" d="M10 7h2v1h-2zM10 8h3v1h-3zM11 9h2v1h-2zM17 9h1v1h-1zM11 10h7v1h-7zM12 11h5v1h-5zM13 12h1v1h-1zM15 12h1v1h-1z"/></svg>
-      <div class="wordmark">Grateful Deploy</div>
-    </div>
-    <p class="tagline">Buttons for your Kamal deploys</p>
-    <p class="pitch">Deploy, roll back and read logs with a button. Every app's version, health and memory at a glance.</p>
-    <div class="chips"><span>Kamal</span><span>Rails 8</span><span>SQLite</span><span>Hotwire</span></div>
-  </div>
-  <div class="url"><b>&#9679;</b>gratefuldeploy.com</div>
   <div class="shot"><img src="../screenshots/dashboard-dark.jpg" alt=""></div>
+  <div class="panel">
+    <div class="dye"></div>
+    <div class="left">
+      <div class="brand">
+        <svg class="rose" viewBox="0 0 24 24" width="68" height="68" aria-hidden="true"><path class="petals" d="M12 2.6c2 0 3.4 1 4.2 2.2 1.6.3 2.8 1.6 2.8 3.4 0 1.3-.5 2.3-1.2 3 .1 2.3-1.9 4.4-5.8 4.4s-5.9-2.1-5.8-4.4c-.7-.7-1.2-1.7-1.2-3 0-1.8 1.2-3.1 2.8-3.4C8.6 3.6 10 2.6 12 2.6z"/><path class="folds" d="M12.4 8.6c-.6-.5-1.6-.2-1.6.7 0 1 1.2 1.6 2.2 1.1 1.2-.6 1.3-2.3.3-3.2-1.2-1.1-3.4-.8-4.1.8-.8 1.7.3 3.8 2.3 4.2 2.3.5 4.4-1 4.6-3.2M7.3 11.2c1.3 1.5 2.9 2.2 4.7 2.2s3.4-.7 4.7-2.2M8 5.6c.6.6 1 1.4 1.1 2.3M16 5.6c-.6.6-1 1.4-1.1 2.3"/><path class="stem" d="M12 15V21.5"/><path class="leaf" d="M12 18.4c-1.9-1.7-4-1.9-5.3-1.3 1.1 1.7 3.2 2.1 5.3 1.3z"/><path class="leaf" d="M12 17.2c1.7-1.5 3.6-1.7 4.8-1.1-1 1.5-2.8 1.9-4.8 1.1z"/></svg>
+        <div class="wordmark">Grateful Deploy</div>
+      </div>
+      <p class="tagline">Buttons for your Kamal deploys</p>
+      <p class="pitch">Deploy, roll back and read logs with a button. Every app's version, health and memory at a glance.</p>
+      <div class="chips"><span>Kamal</span><span>Rails 8</span><span>SQLite</span><span>Hotwire</span></div>
+    </div>
+    <div class="url"><b>&#9679;</b>gratefuldeploy.com</div>
+  </div>
 </body></html>
